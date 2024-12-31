@@ -140,6 +140,18 @@ class Product extends Model
     }
 
     /**
+     * Scope a query to only include customers of a given user.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $userId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByUser($query, int $userId)
+    {
+        return $query->where('user_id', $userId);
+    }
+
+    /**
      * Scope a query to filter products by a specific work.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query

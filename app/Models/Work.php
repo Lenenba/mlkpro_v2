@@ -46,7 +46,7 @@ class Work extends Model
      */
     public function ratings(): HasMany
     {
-        return $this->hasMany(WorkerRating::class);
+        return $this->hasMany(WorkRating::class);
     }
 
     /**
@@ -89,6 +89,17 @@ class Work extends Model
         return $query->whereIn('customer_id', $customerIds);
     }
 
+    /**
+     * Scope a query to filter by one or more customer IDs.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array|int $customerIds
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeByCategory(Builder $query, string $category): Builder
+    {
+        return $query->where('category', $category);
+    }
 
     /**
      * Scope a query to order products by the most recent.

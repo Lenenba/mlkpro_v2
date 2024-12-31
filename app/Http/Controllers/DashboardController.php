@@ -6,24 +6,35 @@ use App\Models\Work;
 use Inertia\Inertia;
 use App\Models\Product;
 use App\Models\Customer;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $lastCustomers = Customer::mostRecent()->paginate(5);
-        $lastWorks = Work::mostRecent()->paginate(5);
-        $mustUseProducts = Product::mustUse()->paginate(5);
-        $customers = Customer::all();
-        $work = Work::all();
-        $product = Product::all();
+
+        $user_id = Auth::user()->id;
+        $lastCustomers = Customer::mostRecent()->byUser($user_id)->paginate(5);
+        $lastWorks = Work::mostRecent()->byUser($user_id)->paginate(5);
+
+        $customers = Customer::byUser($user_id)->get();
+        $products = Product::byUser($user_id)->get();
+        $works = Work::byUser($user_id)->get();
+
+        $quotesWorks = Work::ByCategory('Quotes')->paginate(50);
+        $estimatesWorks = Work::ByCategory('Estimations')->paginate(50);
+        $jobsWorks = Work::ByCategory('Jobs')->paginate(50);
 
          // Pass data to Inertia view
          return Inertia::render('Dashboard', [
                 'customers' => $customers,
+                'products' => $products,
+                'works' => $works,
                 'lastCustomers' => $lastCustomers,
-                'work' => $work,
-                'product' => $product,
+                'lastWorks' => $lastWorks,
+                'quotesWorks' => $quotesWorks,
+                'jobsWorks' => $jobsWorks,
+                'estimatesWorks' => $estimatesWorks,
         ]);
     }
 }

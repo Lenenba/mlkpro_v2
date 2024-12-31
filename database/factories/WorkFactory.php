@@ -21,7 +21,7 @@ class WorkFactory extends Factory
         return [
             'user_id' => User::factory(),
             'customer_id' => Customer::factory(),
-            'category' => $this->faker->randomElement(['Quotes', 'jobs', 'estimations']),
+            'category' => $this->faker->randomElement(['Quotes', 'Jobs', 'Estimations']),
             'description' => $this->faker->sentence(10),
             'type' => $this->faker->randomElement(['Plumbing', 'Electrical', 'Carpentry', 'Painting', 'Cleaning']),
             'work_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
