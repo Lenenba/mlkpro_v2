@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Customer::class, 'customer_id')->constrained('customers')->onDelete('cascade'); // Client customer
             $table->text('description'); // Description of the work
             $table->text('type'); // type of the work
-            $table->text('category')->require()->default('Quote'); // Status of the work
+            $table->text('category'); // Status of the work
             $table->datetime('work_date'); // Date and time of the work
             $table->integer('time_spent')->default(0); // Time spent in minutes
             $table->boolean('is_completed')->default(false); // Status of work completion
@@ -46,7 +46,7 @@ return new class extends Migration
         });
 
         // Additional table to track worker ratings
-        Schema::create('worker_ratings', function (Blueprint $table) {
+        Schema::create('work_ratings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('work_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Worker being rated

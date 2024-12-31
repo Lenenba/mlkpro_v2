@@ -116,7 +116,6 @@ class CustomerController extends Controller
      */
     public function update(CustomerRequest $request, Customer $customer)
     {
-        dd($request->all());
         $this->authorize('update', $customer);
 
         $validated = $request->validated();

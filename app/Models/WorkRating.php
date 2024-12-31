@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class WorkerRating extends Model
+class WorkRating extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkFactory> */
     use HasFactory;

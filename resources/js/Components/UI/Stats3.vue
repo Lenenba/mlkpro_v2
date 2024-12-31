@@ -1,4 +1,9 @@
 <script setup>
+defineProps({
+    customers: Object,
+
+});
+
 </script>
 
 <template>

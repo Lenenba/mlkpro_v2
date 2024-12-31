@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Work;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class WorkRatingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'work_id' => Work::factory(),
+            'user_id' => User::factory(),
+            'rating' => $this->faker->numberBetween(1, 5),
+            'feedback' => $this->faker->optional()->sentence(15),
         ];
     }
 }

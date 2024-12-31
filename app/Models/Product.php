@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Customer extends Model
+class Product extends Model
 {
+    /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
     /**
@@ -17,15 +19,12 @@ class Customer extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'user_id',
         'name',
-        'email',
-        'phone',
-        'address',
-        'city',
-        'state',
-        'zip',
-        'company_name',
+        'description',
+        'category_id',
+        'stock',
+        'minimum_stock',
+        'user_id', // Ajout pour permettre une meilleure gestion multi-utilisateurs
     ];
 
     /**
@@ -34,53 +33,38 @@ class Customer extends Model
      * @var array<string>
      */
     protected $hidden = [
-        'user_id', // Optionnel si vous ne souhaitez pas exposer l'ID de l'utilisateur
         'created_at',
         'updated_at',
     ];
 
     /**
-     * Get the user that owns the customer.
+     * Get the category of the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function user()
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'category_id');
+    }
+
+    /**
+     * Get the user who owns the product.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
     /**
-     * Get the works for the customer.
-     */
-    public function works(): HasMany
-    {
-        return $this->hasMany(Work::class, 'customer_id');
-    }
-    /**
-     * Scope a query to only include customers of a given user.
+     * Get the works that use the product.
      *
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param int $userId
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function scopeByUser($query, int $userId)
+    public function works(): BelongsToMany
     {
-        return $query->where('user_id', $userId);
-    }
-
-    /**
-     * Get the customer's full address.
-     *
-     * @return string
-     */
-    public function getFullAddressAttribute(): string
-    {
-        $addressParts = array_filter([
-            $this->address,
-            $this->city,
-            $this->state,
-            $this->zip,
-        ]);
-
-        return implode(', ', $addressParts);
+        return $this->belongsToMany(Work::class, 'product_works')->withPivot('quantity_used', 'unit');
     }
 
     /**
@@ -95,13 +79,38 @@ class Customer extends Model
     }
 
     /**
-     * Get the total number of works for the customer.
+     * Scope a query to find products with low stock.
      *
-     * @return int
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function getTotalWorks(): int
+    public function scopeLowStock(Builder $query): Builder
     {
-        return $this->works()->count();
+        return $query->whereColumn('stock', '<=', 'minimum_stock');
+    }
+
+    /**
+     * Get a flag indicating if the product is low on stock.
+     *
+     * @return bool
+     */
+    public function getIsLowStockAttribute(): bool
+    {
+        return $this->stock <= $this->minimum_stock;
+    }
+
+    /**
+     * Get a human-readable stock status.
+     *
+     * @return string
+     */
+    public function getStockStatusAttribute(): string
+    {
+        if ($this->is_low_stock) {
+            return 'Low Stock';
+        }
+
+        return 'In Stock';
     }
 
     /**
@@ -114,11 +123,68 @@ class Customer extends Model
     public function scopeFilter(Builder $query, array $filters): Builder
     {
         return $query->when(
-            $filters['company_name'] ?? null,
-            fn($query, $company_name) => $query->where('company_name', 'like', '%' . $company_name . '%')
+            $filters['category_id'] ?? null,
+            fn($query, $categoryId) => $query->where('category_id', $categoryId)
         )->when(
             $filters['name'] ?? null,
             fn($query, $name) => $query->where('name', 'like', '%' . $name . '%')
+        )->when(
+            $filters['stock'] ?? null,
+            fn($query, $stockRange) => $this->applyStockFilter($query, $stockRange)
         );
     }
+
+    public function scopeInStock($query)
+    {
+        return $query->where('stock', '>', 0);
+    }
+
+    /**
+     * Scope a query to filter products by a specific work.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $workId
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeForWork(Builder $query, int $workId): Builder
+    {
+        return $query->whereHas('works', function (Builder $q) use ($workId) {
+            $q->where('work_id', $workId);
+        });
+    }
+
+    /**
+     * Apply stock range filter.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $stockRange
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    private function applyStockFilter(Builder $query, string $stockRange): Builder
+    {
+        if ($stockRange === '0-10') {
+            return $query->whereBetween('stock', [0, 10]);
+        }
+
+        if ($stockRange === '10-100') {
+            return $query->whereBetween('stock', [10, 100]);
+        }
+
+        if ($stockRange === '>100') {
+            return $query->where('stock', '>', 100);
+        }
+
+        return $query;
+    }
+
+    // // Helpers
+    // public function getFormattedPrice(): string
+    // {
+    //     return '$' . number_format($this->price, 2);
+    // }
+
+    // public function isAvailable(): bool
+    // {
+    //     return $this->stock_quantity > 0;
+    // }
 }

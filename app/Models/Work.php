@@ -15,7 +15,7 @@ class Work extends Model
     use HasFactory;
 
 
-    protected $fillable = ['user_id', 'company_id', 'description', 'type', 'work_date', 'time_spent', 'is_completed', 'cost', 'location'];
+    protected $fillable = ['user_id', 'company_id', 'description', 'type', 'work_date', 'time_spent', 'is_completed', 'cost', 'location','category'];
 
     /**
      * Get the user that owns the work.

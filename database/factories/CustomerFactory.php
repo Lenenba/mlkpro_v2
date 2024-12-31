@@ -20,6 +20,7 @@ class CustomerFactory extends Factory
         return [
             'user_id' => User::factory(), // Associez un utilisateur à chaque client
             'name' => $this->faker->name(),
+            'number' => $this->faker->unique()->numerify('C-###'), // Génère un numéro de client aléatoire au format C-###
             'email' => $this->faker->unique()->safeEmail(),
             'phone' => $this->faker->phoneNumber(),
             'address' => $this->faker->address(),
@@ -28,8 +29,7 @@ class CustomerFactory extends Factory
             'zip' => $this->faker->postcode(),
             'company_name' => $this->faker->company(),
             'description' => $this->faker->company(),
-            'logo' => $this->generateFakeCompanyLogo(),
-            'header_image' => $this->faker->imageUrl(1500, 500),
+            'logo' => $this->generateFakeCompanyLogo()
         ];
     }
 

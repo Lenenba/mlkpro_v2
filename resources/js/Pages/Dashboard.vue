@@ -2,9 +2,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import BodyLayoutVue from '@/Layouts/BodyLayout.vue';
 import Stat3 from '@/Components/UI/Stats3.vue';
-import Stat1 from '@/Components/UI/Stat1.vue';
 import StatGaget from '@/Components/UI/StatGaget.vue';
+import List from '@/Components/UI/List.vue';
 import { Head } from '@inertiajs/vue3';
+
+defineProps({
+    customers: Object,
+
+});
+
 </script>
 
 <template>
@@ -19,10 +25,24 @@ import { Head } from '@inertiajs/vue3';
         </template>
         <BodyLayoutVue>
             <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-2 sm:gap-6 lg:gap-8">
-                <Stat3 />
+                <Stat3 :customers="customers" />
                 <Stat3 />
             </div>
-            <StatGaget />
+            <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-2 sm:gap-6 lg:gap-8">
+                <!-- <StatGaget /> -->
+                <div class="pt-8 ">
+                    <List class="min-h-[410px]">
+                        <template #Title> Recent Customers
+                        </template>
+                    </List>
+                </div>
+                <div class="pt-8 ">
+                    <List class="min-h-[410px]">
+                        <template #Title> Recent Works
+                        </template>
+                    </List>
+                </div>
+            </div>
         </BodyLayoutVue>
     </AuthenticatedLayout>
 </template>
