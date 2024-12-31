@@ -1,0 +1,19 @@
+#!/bin/bash
+echo "Running pre-push checks..."
+
+# Lancer les migrations en mode test
+php artisan migrate --env=testing --pretend
+if [ $? -ne 0 ]; then
+    echo "Database migrations have issues. Resolve them before pushing."
+    exit 1
+fi
+
+# Lancer tous les tests
+./vendor/bin/phpunit
+if [ $? -ne 0 ]; then
+    echo "Tests failed. Push aborted."
+    exit 1
+fi
+
+echo "Pre-push checks passed. Proceeding with push..."
+exit 0
