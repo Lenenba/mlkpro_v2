@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\RedirectResponse;
 
 class ProductController extends Controller
 {
@@ -46,11 +47,11 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $validated = $request->validated();
-        $validated['filename'] = FileHandler::handleImageUpload($request, 'filename', 'products/product.jpg');
+        $validated['image'] = FileHandler::handleImageUpload($request, 'image', 'products/product.jpg');
 
         $product = $request->user()->products()->create($validated);
 
-        $product->filename = $validated['filename'];
+        $product->image = $validated['image'];
         $product->save();
 
         return redirect()->route('product.index')->with('success', 'Product created successfully.');
@@ -62,20 +63,22 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return inertia('Product/Show', [
-            'product' => $product->load(['category', 'user'])
+            'product' => $product->load(['category', 'user']),
+            'categories' => ProductCategory::all()
         ]);
     }
 
     /**
      * Update the specified product in the database.
      */
-    public function update(ProductRequest $request, Product $product)
+    public function update(Request $request, Product $product): RedirectResponse
     {
         $this->authorize('update', $product);
 
-        $validated = $request->validated();
-        $validated['filename'] = FileHandler::handleImageUpload($request, 'filename', 'products/product.jpg', $product->filename);
-        $product->filename = $validated['filename'];
+        dump($request->all());
+        // $validated = $request->validated();
+        $validated['image'] = FileHandler::handleImageUpload($request, 'image', 'products/product.jpg', $product->image);
+        $product->image = $validated['image'];
         $product->update($validated);
 
         return redirect()->route('product.index')->with('success', 'Product updated successfully.');
@@ -88,7 +91,7 @@ class ProductController extends Controller
     {
         $this->authorize('delete', $product);
 
-        FileHandler::deleteFile($product->filename, 'products/product.jpg');
+        FileHandler::deleteFile($product->image, 'products/product.jpg');
         $product->delete();
 
         return redirect()->route('product.index')->with('success', 'Product deleted successfully.');

@@ -17,27 +17,37 @@ const props = defineProps({
         type: String,
         default: "product.show",
     },
+    page: {
+        type: String,
+        default: 1,
+    },
 
 });
 
 const cutText = (text, length) => {
     return text.length > length ? text.substring(0, length) + '...' : text;
 };
-
+const getProductImage = (product) => {
+    if (!product.image) return '/images/default-product.png'; // Image par défaut si aucune n'est fournie
+    return product.image.startsWith('http') ? product.image : `/storage/${product.image}`;
+};
 </script>
 
 <template>
     <Link :href="route(routeName, item.id)">
     <div className="card bg-base-100 w-96 shadow-sm mx-auto">
-        <figure>
-            <img :src="item.image" :alt="item.name" />
+        <figure class="object-fill min-h-80 w-96 ">
+            <img :src="getProductImage(item)" :alt="item.name" />
         </figure>
         <div className="card-body">
             <h2 className="card-title">
                 {{ item.name }}
                 <!-- <div className="badge badge-secondary">NEW</div> -->
             </h2>
-            <p className="text-sm text-gray-700 overflow-hidden">
+            <p v-if="page != 'show'" className="text-sm text-gray-700 overflow-hidden">
+                {{ item.description }}
+            </p>
+            <p v-else className="text-sm text-gray-700 overflow-hidden">
                 {{ cutText(item.description, 45) }}
             </p>
             <div className="card-actions justify-end mt-2">

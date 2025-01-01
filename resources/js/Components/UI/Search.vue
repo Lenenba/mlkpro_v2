@@ -37,7 +37,7 @@ watch(() => filterForm.name, (newValue) => {
 </script>
 
 <template>
-    <fieldset class="fieldset w-full bg-white shadow p-6 rounded-box">
+    <fieldset>
         <label class="input  flex items-center w-full h-12 focus:outline-none focus:ring-0">
             <input
                 type="text"
