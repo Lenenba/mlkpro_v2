@@ -5,6 +5,11 @@ defineProps({
     work: Object,
     tab: String,
 });
+
+const getImage = (customer) => {
+    if (!customer.logo) return '/logos/default-customer.png'; // logo par défaut si aucune n'est fournie
+    return customer.logo.startsWith('http') ? customer.logo : `/storage/${customer.logo}`;
+};
 </script>
 <template>
     <div class="flex flex-row gap-7 max-w-[90rem] mx-auto pt-4">
@@ -17,7 +22,7 @@ defineProps({
                         <div class="flex items-center gap-x-3">
                             <div class="flex items-center">
                                 <div class="w-16 h-16 rounded-lg shadow-md overflow-hidden">
-                                    <img :src="customer.logo || 'https://via.placeholder.com/150'" alt="Profile"
+                                    <img :src="getImage(customer) || 'https://via.placeholder.com/150'" alt="Profile"
                                         class="w-full h-full object-cover" />
                                 </div>
                                 <div class="ml-4 text-left">

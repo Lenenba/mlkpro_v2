@@ -41,13 +41,8 @@ class CustomerRequest extends FormRequest
                 'image',
                 'mimes:jpg,jpeg,png,svg',
                 'max:2048',
-            ], // Validate logo image
-            'header_image' => [
-                'nullable',
-                'image',
-                'mimes:jpg,jpeg,png,svg',
-                'max:2048',
-            ], // Validate header image
+            ],
+            'type' => 'nullable|string|max:255',
             'description' => 'nullable|string|min:5|max:255',
         ];
     }

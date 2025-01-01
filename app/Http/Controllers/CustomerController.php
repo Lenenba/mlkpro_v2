@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Work;
 use Inertia\Inertia;
 use App\Models\Customer;
@@ -100,11 +99,10 @@ class CustomerController extends Controller
     {
         $validated = $request->validated();
         $validated['logo'] = FileHandler::handleImageUpload($request, 'logo', 'customers/corporateHeader.webp');
-        $validated['header_image'] = FileHandler::handleImageUpload($request, 'header_image', 'customers/corporateHeader.webp');
 
         $customer = $request->user()->customers()->create($validated);
 
-        $customer->header_image = $validated['header_image'];
+        $customer->number = 'CUST' . str_pad($customer->id, 6, '0', STR_PAD_LEFT);
         $customer->logo = $validated['logo'];
         $customer->save();
 

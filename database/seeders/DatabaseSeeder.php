@@ -31,9 +31,14 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         // Create customers and associate with users
-        Customer::factory(10)
+        $customers = Customer::factory(10)
             ->recycle($users)
             ->create();
+
+        foreach ($customers as $customer) {
+            $customer->number = 'CUST' . str_pad($customer->id, 6, '0', STR_PAD_LEFT);
+            $customer->save();
+        }
 
         // Create works and associate with users and customers
         $works = Work::factory(50)
