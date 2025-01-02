@@ -45,7 +45,11 @@ class WorkController extends Controller
         $work = Work::with(['customer', 'products', 'ratings'])->findOrFail($id);
 
         $this->authorize('view', $work);
-        return inertia('Work/Index', ['work' => $work]);
+        return inertia('Work/Show', [
+            'work' => $work,
+            'customer' => $work->customer
+            ]
+        );
     }
 
     /**

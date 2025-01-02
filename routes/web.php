@@ -37,8 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/work/create/{customer_id}', [WorkController::class, 'create'])
         ->name('work.create');
 
-    Route::resource('work', WorkController::class)
-        ->only(['index', 'show', 'store']);
+    Route::resource('work', WorkController::class);
 
     // Product Management
     Route::resource('product', ProductController::class);
