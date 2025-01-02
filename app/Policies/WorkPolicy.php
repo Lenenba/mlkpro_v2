@@ -16,4 +16,9 @@ class WorkPolicy
     {
         return $user->id === $work->user_id;
     }
+
+    public function view(User $user, Work $work): bool
+    {
+        return $user->id === $work->user_id;
+    }
 }

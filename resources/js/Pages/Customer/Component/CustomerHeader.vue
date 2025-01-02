@@ -5,6 +5,9 @@ defineProps({
     work: Object,
     tab: String,
 });
+const cutText = (text, length) => {
+    return text.length > length ? text.substring(0, length) + '...' : text;
+};
 
 const getImage = (customer) => {
     if (!customer.logo) return '/logos/default-customer.png'; // logo par défaut si aucune n'est fournie
@@ -80,19 +83,18 @@ const getImage = (customer) => {
                                         {{ work.type }}
                                     </h2>
                                     <p class="text-xs text-gray-600">
-                                        {{ work.description }}
+                                        {{ work.number }}
                                     </p>
                                     <p class="text-xs text-gray-600">
-                                        {{ work.location }}
+                                        {{ work.category }}
                                     </p>
                                     <p class="text-xs text-gray-600">
                                         {{ work.work_date }}
                                     </p>
                                 </div>
                             </div>
-
                             <span
-                                class="px-3 py-1 text-xs text-green-600 bg-green-100 rounded-full dark:bg-gray-800 dark:text-blue-400">
+                                class="badge badge-outline badge-danger text-green-600 bg-green-100 dark:bg-gray-800 dark:text-blue-400">
                                 {{ work.cost }} $
                             </span>
                         </div>

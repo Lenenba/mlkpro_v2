@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Worker
             $table->foreignIdFor(Customer::class, 'customer_id')->constrained('customers')->onDelete('cascade'); // Client customer
+            $table->string('number')->nullable(); // Work number
             $table->text('description'); // Description of the work
             $table->text('type'); // type of the work
             $table->text('category'); // Status of the work

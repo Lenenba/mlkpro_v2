@@ -2,9 +2,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import CustomerHeader from '@/Pages/Customer/Component/CustomerHeader.vue';
 import BodyLayoutVue from '@/Layouts/BodyLayout.vue';
+import Form from '@/Pages/Work/Component/Form.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
 
 const props = defineProps({
+    work: Object,
     customer: Object,
 });
 
@@ -27,6 +29,7 @@ const form = useForm({
         </template>
 
         <BodyLayoutVue>
+            <Form :work="work" :customer="customer" />
         </BodyLayoutVue>
     </AuthenticatedLayout>
 </template>

@@ -25,10 +25,15 @@ class DatabaseSeeder extends Seeder
         $categories = ProductCategory::factory(5)->create();
 
         // Create products and associate with categories and users
-        Product::factory(20)
+        $Products = Product::factory(20)
             ->recycle($categories)
             ->recycle($users)
             ->create();
+
+        foreach ($Products as $product) {
+            $product->number = 'PROD' . str_pad($product->id, 6, '0', STR_PAD_LEFT);
+            $product->save();
+        }
 
         // Create customers and associate with users
         $customers = Customer::factory(10)
@@ -46,6 +51,10 @@ class DatabaseSeeder extends Seeder
             ->recycle(Customer::all())
             ->create();
 
+        foreach ($works as $work) {
+            $work->number = 'WORK' . str_pad($work->id, 6, '0', STR_PAD_LEFT);
+            $work->save();
+        }
         // Create product usage for works
         ProductWork::factory(30)
             ->recycle($works)

@@ -61,7 +61,7 @@ const form = useForm({
                                 </td>
                                 <td>{{ work.cost }}</td>
                                 <td>
-                                    <Link :href="route('work.show', work.id)">
+                                    <Link :href="route('work.edit', work.id)">
                                         <button class="btn btn-neutral">View</button>
                                     </Link>
                                 </td>

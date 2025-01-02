@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Pest\ArchPresets\Custom;
 
 class WorkController extends Controller
 {
@@ -54,6 +55,7 @@ class WorkController extends Controller
 
         $validated = $request->validate([
             'customer_id' => 'required|exists:customers,id',
+            'category' => 'required|string',
             'type' => 'required|string',
             'description' => 'required|string',
             'work_date' => 'required|date',
@@ -65,6 +67,8 @@ class WorkController extends Controller
         $customer = Customer::with(['works'])->findOrFail($validated['customer_id']);
         $validated['user_id'] = Auth::user()->id;
         $work =  $customer->works()->create($validated);
+        $work->number = 'WORK' . str_pad($work->id, 6, '0', STR_PAD_LEFT);
+        $work->save();
 
         return redirect()->route('work.edit',  [
             'work_id' => $work->id,
@@ -73,35 +77,40 @@ class WorkController extends Controller
         ])->with('success', 'Work created successfully.');
     }
 
+    /**
+     * Show the form for editing the specified work.
+     */
     public function edit(int $work_id, ?Request $request)
     {
+        // Fetch work with relationships and ensure authorization
         $work = Work::with(['customer', 'products', 'ratings'])->findOrFail($work_id);
         $this->authorize('edit', $work);
-        $filters = $request->only([
-            'category_id',
-            'name',
-            'stock'
-        ]);
-        $workProducts = $work->products ?? [];
 
-        $products = Product::mostRecent()
-        ->filter($filters)
-        ->with(['category','works'])
-        ->simplePaginate(4)
-        ->withQueryString();
-        $categories = ProductCategory::all();
-        $customer = $work->customer->load('works');
+        // Handle request filters for products
+        $filters = $request->only(['category_id', 'name', 'stock']);
 
+        // Default empty array for work products
+        $workProducts = $work->products()->with('category')->get() ?: [];
 
+        // Improved query for products with eager loading, filters, and pagination
+        $productsQuery = Product::mostRecent()->filter($filters)->with(['category', 'works']);
+        $products = $productsQuery->simplePaginate(5)->withQueryString();
+
+        // Retrieve the customer by authenticated user, optimizing the query
+        $customer = Customer::with(['works'])
+            ->byUser(Auth::user()->id)
+            ->findOrFail($work->customer_id);
+
+        // Return the data to the Inertia component
         return inertia('Work/Edit', [
             'work' => $work,
             'customer' => $customer,
             'filters' => $filters,
             'workProducts' => $workProducts,
             'products' => $products,
-            'categories' => $categories,
         ]);
     }
+
 
     /**
      * Update the specified work in storage.

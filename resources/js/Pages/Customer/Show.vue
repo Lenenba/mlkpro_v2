@@ -34,7 +34,7 @@ const form = useForm({
                     <table class="table table-xs">
                         <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>Number</th>
                                 <th>Description</th>
                                 <th>Category</th>
                                 <th>Type</th>
@@ -47,7 +47,7 @@ const form = useForm({
                         </thead>
                         <tbody>
                             <tr v-for="work in works.data" :key="work.id" :value="work.id">
-                                <td>{{ work.id }}</td>
+                                <td>{{ work.number }}</td>
                                 <td>{{ work.description }}</td>
                                 <td>{{ work.category }}</td>
                                 <td>{{ work.type }}</td>
@@ -61,7 +61,7 @@ const form = useForm({
                                 </td>
                                 <td>{{ work.cost }}</td>
                                 <td>
-                                    <Link :href="route('work.show', work.id)">
+                                    <Link :href="route('work.edit', work.id)">
                                         <button class="btn btn-neutral">View</button>
                                     </Link>
                                 </td>

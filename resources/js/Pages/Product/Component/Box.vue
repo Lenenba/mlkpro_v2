@@ -52,10 +52,10 @@ const getProductImage = (product) => {
             </p>
             <div className="card-actions justify-end mt-2">
                 <button class="btn">
-                    Category :<div class="badge badge-soft badge-neutral">{{ item.category.name }}</div>
+                    <div class="badge badge-soft badge-accent">{{ item.number }}</div>
                 </button>
                 <button class="btn">
-                    Stock :<div class="badge badge-soft badge-accent">{{ item.stock }}</div>
+                    Stock :<div class="badge badge-soft badge-success">{{ item.stock }}</div>
                 </button>
             </div>
         </div>

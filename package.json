@@ -18,5 +18,8 @@
         "tailwindcss": "^3.4.17",
         "vite": "^6.0",
         "vue": "^3.4.0"
+    },
+    "dependencies": {
+        "cally": "^0.7.2"
     }
 }
