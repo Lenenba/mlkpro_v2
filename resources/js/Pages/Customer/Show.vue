@@ -39,6 +39,7 @@ const form = useForm({
                                 <th>Category</th>
                                 <th>Type</th>
                                 <th>Work date</th>
+                                <th>Products</th>
                                 <th>Time spent</th>
                                 <th>Status</th>
                                 <th>Cost</th>
@@ -52,6 +53,7 @@ const form = useForm({
                                 <td>{{ work.category }}</td>
                                 <td>{{ work.type }}</td>
                                 <td>{{ work.work_date }}</td>
+                                <td>{{ work.products.length }}</td>
                                 <td>{{ work.time_spent }}</td>
                                 <td>
                                     <button>

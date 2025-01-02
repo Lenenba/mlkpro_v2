@@ -35,30 +35,27 @@ const getProductImage = (product) => {
 
 <template>
     <Link :href="route(routeName, item.id)">
-    <div className="card bg-base-100 w-96 shadow-sm mx-auto">
-        <figure class="object-fill min-h-80 w-96 ">
-            <img :src="getProductImage(item)" :alt="item.name" />
-        </figure>
-        <div className="card-body">
-            <h2 className="card-title">
-                {{ item.name }}
-                <!-- <div className="badge badge-secondary">NEW</div> -->
-            </h2>
-            <p v-if="page != 'show'" className="text-sm text-gray-700 overflow-hidden">
-                {{ item.description }}
-            </p>
-            <p v-else className="text-sm text-gray-700 overflow-hidden">
-                {{ cutText(item.description, 45) }}
-            </p>
-            <div className="card-actions justify-end mt-2">
-                <button class="btn">
-                    <div class="badge badge-soft badge-accent">{{ item.number }}</div>
-                </button>
-                <button class="btn">
-                    Stock :<div class="badge badge-soft badge-success">{{ item.stock }}</div>
-                </button>
+        <div class=" h-32 w-42 card card-side card-xs bg-base-100 shadow-xl flex flex-row items-center">
+            <figure class="h-32 w-32">
+                <img :src="item.image" alt="Movie" />
+            </figure>
+            <div class="card-body flex flex-col items-start">
+                <h2 class="card-title text-xs">{{ item.name }}</h2>
+                <p v-if="page != 'show'" className="text-sm text-gray-700 overflow-hidden">
+                    {{ item.description }}
+                </p>
+                <p v-else className="text-sm text-gray-700 overflow-hidden">
+                    {{ cutText(item.description, 30) }}
+                </p>
+                <div className="card-actions justify-end mt-2">
+                    <button class="btn">
+                        <div class="badge badge-soft badge-accent">{{ item.number }}</div>
+                    </button>
+                    <button class="btn">
+                        Stock :<div class="badge badge-soft badge-success">{{ item.stock }}</div>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
     </Link>
 </template>

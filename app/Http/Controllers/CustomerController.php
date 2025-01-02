@@ -34,7 +34,7 @@ class CustomerController extends Controller
             }])
             ->filter($filters)
             ->byUser($userId)
-            ->simplePaginate(3)
+            ->simplePaginate(12)
             ->withQueryString();
 
         // Pass data to Inertia view
@@ -102,6 +102,7 @@ class CustomerController extends Controller
 
         $customer = $request->user()->customers()->create($validated);
 
+        $customer->description = $validated['description'];
         $customer->number = 'CUST' . str_pad($customer->id, 6, '0', STR_PAD_LEFT);
         $customer->logo = $validated['logo'];
         $customer->save();

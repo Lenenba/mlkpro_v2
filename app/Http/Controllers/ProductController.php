@@ -26,7 +26,7 @@ class ProductController extends Controller
             'products' => Product::mostRecent()
                 ->filter($filters)
                 ->with(['category', 'user'])
-                ->simplePaginate(6)
+                ->simplePaginate(12)
                 ->withQueryString()
         ]);
     }

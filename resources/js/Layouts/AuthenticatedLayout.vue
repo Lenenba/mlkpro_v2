@@ -12,6 +12,12 @@ const showingNavigationDropdown = ref(false);
 const flashSuccess = computed(
     () => page.props.flash.success
 )
+const flashWarning = computed(
+    () => page.props.flash.warning
+)
+const flashError = computed(
+    () => page.props.flash.error
+)
 
 </script>
 
@@ -161,6 +167,34 @@ const flashSuccess = computed(
                 </svg>
                 <span class="ml-3 text-sm font-medium text-green-700 dark:text-green-300">
                     {{ flashSuccess }}
+                </span>
+            </div>
+
+            <div v-if="flashError"
+                class="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 border rounded-md shadow-sm border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900 p-2 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                    class="w-6 h-6 text-red-500 dark:text-red-300">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+                <span class="ml-3 text-sm font-medium text-red-700 dark:text-red-300">
+                    {{ flashError }}
+                </span>
+            </div>
+
+            <div v-if="flashWarning"
+                class="mx-auto max-w-[90rem] px-4 sm:px-6 lg:px-8 border rounded-md shadow-sm border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900 p-2 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
+                    class="w-6 h-6 text-yellow-500 dark:text-yellow-300">
+                    <path fill-rule="evenodd"
+                        d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z"
+                        clip-rule="evenodd">
+                    </path>
+                </svg>
+                <span class="ml-3 text-sm font-medium text-yellow-700 dark:text-yellow-300">
+                    {{ "flashWarning" }}
                 </span>
             </div>
             <!-- Page Content -->

@@ -1,11 +1,9 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Work;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\ProductCategory;
 
 class ProductWorkController extends Controller
 {
@@ -25,6 +23,12 @@ class ProductWorkController extends Controller
         ]);
 
         $work = Work::with(['customer', 'products', 'ratings'])->findOrFail($validated['work_id']);
+        $product = Product::findOrFail($validated['product_id']);
+
+        // Vérifier si le produit est en stock
+        if ($product->stock < $validated['quantity_used']) {
+            return redirect()->back()->with('error', 'Not enough stock for this product.');
+        }
 
         // Vérifier si le produit existe déjà dans ce travail
         $existingProduct = $work->products()
@@ -36,12 +40,18 @@ class ProductWorkController extends Controller
             $work->products()->updateExistingPivot($validated['product_id'], [
                 'quantity_used' => $existingProduct->pivot->quantity_used + $validated['quantity_used'],
             ]);
+            // Diminuer le stock du produit
+            $product->stock -= $validated['quantity_used'];
+            $product->save();
         } else {
             // Attacher le produit avec la nouvelle quantité et unité
             $work->products()->attach($validated['product_id'], [
                 'quantity_used' => $validated['quantity_used'],
                 'unit' => $validated['unit'],
             ]);
+            // Diminuer le stock du produit
+            $product->stock -= $validated['quantity_used'];
+            $product->save();
         }
 
         // Charger le client et ses travaux pour la redirection
@@ -54,7 +64,6 @@ class ProductWorkController extends Controller
         ])->with('success', 'Product added successfully.');
     }
 
-
     /**
      * Remove the specified resource from storage.
      *
@@ -62,17 +71,28 @@ class ProductWorkController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\RedirectResponse
      */
-
     public function destroy(Work $work, Product $product)
     {
-        $work->products()->detach($product->id);
+        // Vérifier la quantité utilisée avant de détacher
+        $productPivot = $work->products()->where('product_id', $product->id)->first();
+        if ($productPivot) {
+            $quantityUsed = $productPivot->pivot->quantity_used;
 
+            // Détacher le produit du travail
+            $work->products()->detach($product->id);
+
+            // Ajouter le stock du produit
+            $product->stock += $quantityUsed;
+            $product->save();
+        }
+
+        // Charger le client et ses travaux pour la redirection
         $customer = $work->customer->load('works');
 
         return redirect()->route('work.edit', [
             'work_id' => $work->id,
             'work' => $work,
             'customer' => $customer
-        ])->with('success', 'product removed successfully.');
+        ])->with('success', 'Product removed successfully.');
     }
 }
