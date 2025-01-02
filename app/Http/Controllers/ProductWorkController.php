@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Work;
 use App\Models\Product;
+use App\Notifications\LowStock;
 use Illuminate\Http\Request;
 
 class ProductWorkController extends Controller
@@ -55,6 +56,11 @@ class ProductWorkController extends Controller
             $product->save();
         }
 
+        // Check if stock reaches or goes below minimum level
+        if ($product->stock <= $product->minimum_stock) {
+            // Notify the product owner or admin
+            $product->user->notify(new LowStock($product));
+        }
 
         // Charger le client et ses travaux pour la redirection
         $customer = $work->customer->load('works');
