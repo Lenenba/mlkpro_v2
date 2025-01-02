@@ -25,15 +25,25 @@ class DatabaseSeeder extends Seeder
         $categories = ProductCategory::factory(5)->create();
 
         // Create products and associate with categories and users
-        Product::factory(20)
+        $Products = Product::factory(20)
             ->recycle($categories)
             ->recycle($users)
             ->create();
 
+        foreach ($Products as $product) {
+            $product->number = 'PROD' . str_pad($product->id, 6, '0', STR_PAD_LEFT);
+            $product->save();
+        }
+
         // Create customers and associate with users
-        Customer::factory(10)
+        $customers = Customer::factory(10)
             ->recycle($users)
             ->create();
+
+        foreach ($customers as $customer) {
+            $customer->number = 'CUST' . str_pad($customer->id, 6, '0', STR_PAD_LEFT);
+            $customer->save();
+        }
 
         // Create works and associate with users and customers
         $works = Work::factory(50)
@@ -41,11 +51,17 @@ class DatabaseSeeder extends Seeder
             ->recycle(Customer::all())
             ->create();
 
+        foreach ($works as $work) {
+            $work->number = 'WORK' . str_pad($work->id, 6, '0', STR_PAD_LEFT);
+            $this->updateWorkCost($work);
+            $work->save();
+        }
         // Create product usage for works
         ProductWork::factory(30)
             ->recycle($works)
             ->recycle(Product::all())
             ->create();
+
 
         // Create worker ratings for works
         WorkRating::factory(10)
@@ -53,4 +69,19 @@ class DatabaseSeeder extends Seeder
             ->recycle($users)
             ->create();
     }
+
+    private function updateWorkCost(Work $work)
+    {
+        // Calculer le coût total des produits ajoutés
+        $productsCost = 0;
+
+        foreach ($work->products as $product) {
+            $productsCost += $product->price * $product->pivot->quantity_used;
+        }
+
+        // Mettre à jour le coût du travail, en ajoutant les produits au prix de base
+        $work->cost = $work->base_cost + $productsCost;
+        $work->save();
+    }
+
 }

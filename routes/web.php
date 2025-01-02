@@ -41,8 +41,7 @@ Route::middleware('auth')->group(function () {
         ->only(['index', 'show', 'store']);
 
     // Product Management
-    Route::resource('product', ProductController::class)
-        ->only(['destroy', 'store', 'update', 'index']);
+    Route::resource('product', ProductController::class);
 
     // Product-Work Association
     Route::post('work/product/store', [ProductWorkController::class, 'store'])

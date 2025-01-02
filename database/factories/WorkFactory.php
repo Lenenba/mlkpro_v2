@@ -27,8 +27,7 @@ class WorkFactory extends Factory
             'work_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'time_spent' => $this->faker->numberBetween(30, 480), // Time spent in minutes
             'is_completed' => $this->faker->boolean(),
-            'cost' => $this->faker->randomFloat(2, 50, 5000),
-            'location' => $this->faker->address(),
+            'base_cost' => $this->faker->randomFloat(2, 50, 5000),
         ];
     }
 }

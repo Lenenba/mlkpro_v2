@@ -121,7 +121,7 @@ const adaptCustomersToListItems = (type) => {
                     </List>
                 </div>
                 <div class="pt-8 ">
-                    <List class="min-h-[410px]" :items="adaptCustomersToListItems('works')" :type="'work'">
+                    <List class="min-h-[410px]" :items="adaptCustomersToListItems('works')" :type="'work/edit'">
                         <template #Title> Recent Works
                         </template>
                     </List>

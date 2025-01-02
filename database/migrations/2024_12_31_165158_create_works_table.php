@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Worker
             $table->foreignIdFor(Customer::class, 'customer_id')->constrained('customers')->onDelete('cascade'); // Client customer
+            $table->string('number')->nullable(); // Work number
             $table->text('description'); // Description of the work
             $table->text('type'); // type of the work
             $table->text('category'); // Status of the work
@@ -24,7 +25,7 @@ return new class extends Migration
             $table->integer('time_spent')->default(0); // Time spent in minutes
             $table->boolean('is_completed')->default(false); // Status of work completion
             $table->decimal('cost', 10, 2)->nullable(); // Cost of the work (if applicable)
-            $table->string('location')->nullable(); // Location of the work
+            $table->decimal('base_cost', 10, 2)->nullable(); // Cost of the work (if applicable)
             $table->timestamps();
 
             // Indexes for faster querying

@@ -121,4 +121,5 @@ class Customer extends Model
             fn($query, $name) => $query->where('name', 'like', '%' . $name . '%')
         );
     }
+
 }
