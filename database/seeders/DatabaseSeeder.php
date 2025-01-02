@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Work;
+use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\WorkRating;
@@ -68,6 +69,22 @@ class DatabaseSeeder extends Seeder
             ->recycle($works)
             ->recycle($users)
             ->create();
+
+            // Create invoices for works
+        foreach ($works as $work) {
+            Invoice::factory()->create([
+                'customer_id' => $work->customer_id,
+                'user_id' => $work->user_id,
+                'work_id' => $work->id,
+                'total' => $work->cost,
+                'status' => 'pending',
+            ]);
+        }
+
+        foreach (Invoice::all() as $invoice) {
+            $invoice->number = 'INV' . str_pad($invoice->id, 6, '0', STR_PAD_LEFT);
+            $invoice->save();
+        }
     }
 
     private function updateWorkCost(Work $work)

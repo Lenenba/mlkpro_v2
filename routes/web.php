@@ -3,12 +3,13 @@
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CustomerController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductWorkController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // Guest Routes
 Route::get('/', [AuthenticatedSessionController::class, 'create'])
@@ -48,6 +49,16 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('work/{work}/product/{product}/detach', [ProductWorkController::class, 'destroy'])
         ->name('work.product.detach');
+
+    // Invoice Management
+    Route::get('/invoice/generate/{work_id}', [InvoiceController::class, 'generate'])
+        ->name('invoice.generate');
+
+    Route::get('/invoice', [InvoiceController::class, 'index'])
+        ->name('invoice.index');
+
+    Route::get('/invoice/{invoice}', [InvoiceController::class, 'show'])
+        ->name('invoice.show');
 });
 
 // Authentication Routes

@@ -26,6 +26,14 @@ class Work extends Model
     }
 
     /**
+     * Get the invoice that owns the work.
+     */
+    public function invoice()
+    {
+        return $this->hasOne(Invoice::class);
+    }
+
+    /**
      * Get the company that owns the work.
      */
     public function customer(): BelongsTo

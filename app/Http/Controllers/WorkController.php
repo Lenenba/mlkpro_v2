@@ -42,7 +42,7 @@ class WorkController extends Controller
      */
     public function show($id)
     {
-        $work = Work::with(['customer', 'products', 'ratings'])->findOrFail($id);
+        $work = Work::with(['customer', 'invoice' ,'products', 'ratings'])->findOrFail($id);
 
         $this->authorize('view', $work);
         return inertia('Work/Show', [
