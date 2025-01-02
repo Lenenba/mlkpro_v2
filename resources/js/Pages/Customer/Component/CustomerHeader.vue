@@ -32,11 +32,14 @@ const getImage = (customer) => {
                                     <h2 class="text-sm font-bold text-gray-800">
                                         {{ customer.company_name || 'Unknown User' }}
                                     </h2>
-                                    <h2 class="text-sm font-bold text-gray-800">
+                                    <h2 class="text-xs text-gray-800">
                                         {{ customer.number || 'Unknown User' }}
                                     </h2>
                                     <p class="text-xs text-gray-600">
                                         {{ customer.name || 'Role not specified' }}
+                                    </p>
+                                    <p class="text-xs text-gray-600">
+                                        {{ cutText(customer.description, 40) || 'Role not specified' }}
                                     </p>
                                 </div>
                             </div>

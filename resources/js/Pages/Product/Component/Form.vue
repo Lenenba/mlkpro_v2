@@ -12,8 +12,9 @@ const props = defineProps({
 const form = useForm({
     name: props.product?.name || '',
     category_id: props.product?.category_id || '',
-    stock: props.product?.stock || 0,
-    minimum_stock: props.product?.minimum_stock || 0,
+    stock: props.product?.stock || '',
+    price: props.product?.price || '',
+    minimum_stock: props.product?.minimum_stock || '',
     description: props.product?.description || '',
     image: props.product?.image || '',
 });
@@ -43,26 +44,23 @@ const submit = () => {
                     <input type="text" class="grow" placeholder="Name" v-model="form.name" />
                 </label>
                 <InputError class="mt-2" :message="form.errors.name" />
-                <select class="select select-bordered flex items-center gap-2 focus:outline-none focus:ring-0"
-                    v-model="form.category_id">
-                    <option disabled selected>Select category</option>
-                    <option v-for="category in categories" :key="category.id" :value="category.id">
-                        {{ category.name }}
-                    </option>
-                </select>
+                <input type="number" class="input validator" required placeholder="Price" min="1" max="100"
+                    title="Must be between be 1 to 10" v-model="form.price" />
             </div>
             <div class="flex flex-row gap-4">
-                <label class="input input-bordered flex items-center gap-2 focus:outline-none focus:ring-0">
-                    <input type="number" class="grow" placeholder="Stock" v-model="form.stock" />
-                </label>
-                <label class="input input-bordered flex items-center gap-2 focus:outline-none focus:ring-0">
-                    <input type="number" class="grow" placeholder="Minimun stock" v-model="form.minimum_stock" />
-                </label>
+                <input type="number" class="input validator" required placeholder="Stock" min="1" max="10"
+                    title="Must be between be 1 to 10" v-model="form.stock" />
+                <input type="number" class="input validator" required placeholder="Minimum stock" min="1" max="10"
+                    title="Must be between be 1 to 10" v-model="form.minimum_stock" />
             </div>
-
+            <select class="select select-bordered w-full focus:outline-none focus:ring-0" v-model="form.category_id">
+                <option disabled selected>Select category</option>
+                <option v-for="category in categories" :key="category.id" :value="category.id">
+                    {{ category.name }}
+                </option>
+            </select>
             <textarea class="textarea textarea-bordered w-full" placeholder="Description"
                 v-model="form.description"></textarea>
-                <p class="validator-hint">Required</p>
             <!-- Images -->
             <div class="mt-1">
                 <label for="image" value="Image" />
@@ -73,7 +71,7 @@ const submit = () => {
                 <Link :href="route('product.index')">
                 <button @click="Cancel" class="btn btn-info-content">Cancel</button>
                 </Link>
-                <button @click="Submit" class="btn btn-primary">Save product</button>
+                <button class="btn btn-primary">Save product</button>
             </div>
         </form>
     </div>

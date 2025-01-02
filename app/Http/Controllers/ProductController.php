@@ -51,6 +51,7 @@ class ProductController extends Controller
 
         $product = $request->user()->products()->create($validated);
 
+        $product->price = $validated['price'];
         $product->number = 'PROD' . str_pad($product->id, 6, '0', STR_PAD_LEFT);
         $product->image = $validated['image'];
         $product->save();
@@ -72,13 +73,12 @@ class ProductController extends Controller
     /**
      * Update the specified product in the database.
      */
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(ProductRequest $request, Product $product): RedirectResponse
     {
         $this->authorize('update', $product);
-
-        dump($request->all());
-        // $validated = $request->validated();
+        $validated = $request->validated();
         $validated['image'] = FileHandler::handleImageUpload($request, 'image', 'products/product.jpg', $product->image);
+        $product->price = $validated['price'];
         $product->image = $validated['image'];
         $product->update($validated);
 

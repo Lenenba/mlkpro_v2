@@ -54,6 +54,7 @@ const cutText = (text, length) => {
                     <th>Name</th>
                     <th>Category</th>
                     <th>Description</th>
+                    <th>Price</th>
                     <th>stock</th>
                     <th>Qty used</th>
                 </tr>
@@ -65,6 +66,7 @@ const cutText = (text, length) => {
                     <td>{{ product.name }} </td>
                     <td>{{ product.category.name }} </td>
                     <td> {{ cutText(product.description, 30) }} </td>
+                    <td>{{ product.price }} </td>
                     <td>{{ product.stock }}</td>
                     <th>{{ product.pivot.quantity_used }} - {{ product.pivot.unit }}</th>
                     <th class="px-4 py-2 text-sm whitespace-nowrap">

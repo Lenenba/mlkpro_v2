@@ -53,6 +53,10 @@ watch(() => filterForm.name, (newValue) => {
         autoFilter();
     }
 });
+const getProductImage = (product) => {
+    if (!product.image) return '/images/default-product.png'; // Image par défaut si aucune n'est fournie
+    return product.image.startsWith('http') ? product.image : `/storage/${product.image}`;
+};
 
 </script>
 
@@ -70,7 +74,7 @@ watch(() => filterForm.name, (newValue) => {
         <div v-for="product in products.data" :key="product.id" :value="product.id"
             class=" h-32 w-42 card card-side bg-base-100 shadow-xl flex flex-row items-center">
             <figure class="h-32 w-32">
-                <img :src="product.image" alt="Movie" />
+                <img :src="getProductImage(product)" alt="Movie" />
             </figure>
             <div class="card-body flex flex-col items-start">
                 <h2 class="card-title text-xs">{{ product.name }}</h2>

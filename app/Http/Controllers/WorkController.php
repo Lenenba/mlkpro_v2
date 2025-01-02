@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\WorkRequest;
 use App\Models\Work;
 use App\Models\Product;
 use App\Models\Customer;
@@ -50,20 +51,10 @@ class WorkController extends Controller
     /**
      * Store a newly created work in storage.
      */
-    public function store(Request $request)
+    public function store(WorkRequest $request)
     {
-
-        $validated = $request->validate([
-            'customer_id' => 'required|exists:customers,id',
-            'category' => 'required|string',
-            'type' => 'required|string',
-            'description' => 'required|string',
-            'work_date' => 'required|date',
-            'time_spent' => 'nullable|integer|min:0',
-            'cost' => 'nullable|numeric|min:0',
-            'location' => 'nullable|string',
-        ]);
-
+        dump($request->all());
+        $validated = $request->validated( );
         $customer = Customer::with(['works'])->findOrFail($validated['customer_id']);
         $validated['user_id'] = Auth::user()->id;
         $work =  $customer->works()->create($validated);
@@ -115,21 +106,11 @@ class WorkController extends Controller
     /**
      * Update the specified work in storage.
      */
-    public function update(Request $request, $id)
+    public function update(WorkRequest $request, $id)
     {
         $work = Work::findOrFail($id);
 
-        $validated = $request->validate([
-            'description' => 'nullable|string',
-            'work_date' => 'nullable|date',
-            'time_spent' => 'nullable|integer|min:0',
-            'is_completed' => 'nullable|boolean',
-            'cost' => 'nullable|numeric|min:0',
-            'location' => 'nullable|string',
-            'products' => 'array',
-            'products.*.product_id' => 'required_with:products|exists:products,id',
-            'products.*.quantity_used' => 'required_with:products|integer|min:1',
-        ]);
+        $validated = $request->validated();
 
         $work->update($validated);
 

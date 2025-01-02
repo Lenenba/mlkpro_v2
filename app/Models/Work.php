@@ -163,4 +163,5 @@ class Work extends Model
             fn($query, $month) => $query->whereMonth('work_date', $month))
         ;
     }
+
 }

@@ -36,6 +36,8 @@ const submit = () => {
         },
     });
 };
+
+
 </script>
 
 <template>
@@ -111,7 +113,6 @@ const submit = () => {
                     placeholder="Description"
                     v-model="form.description"
                 ></textarea>
-                <p class="text-sm text-gray-500 mt-1">Required</p>
             </div>
 
             <!-- Image Input -->

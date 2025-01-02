@@ -23,12 +23,12 @@ class WorkRequest extends FormRequest
     {
         return [
             'customer_id' => 'required|exists:customers,id',
-            'type' => 'required|string',
-            'description' => 'required|string',
-            'work_date' => 'required|date',
-            'time_spent' => 'nullable|integer|min:0',
-            'cost' => 'nullable|numeric|min:0',
-            'location' => 'nullable|string',
+            'type' => 'required|string', // Example of restricted types
+            'category' => 'required|string', // Example of restricted types
+            'description' => 'required|string|max:255', // Optional: restrict the length
+            'work_date' => 'required|date|after:today', // Ensure the work date is in the future
+            'time_spent' => 'nullable|integer|min:0', // Optional: ensure it's non-negative if provided
+            'base_cost' => 'nullable|numeric|min:0', // Ensure the cost is non-negative if provided
         ];
     }
 }

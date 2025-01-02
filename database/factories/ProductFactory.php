@@ -27,6 +27,7 @@ class ProductFactory extends Factory
 
         return [
             'name' => $dummyResponse['title'], // Nom du produit
+            'price' => $dummyResponse['price'], // Prix du produit
             'description' => $dummyResponse['description'], // Description du produit
             'category_id' => ProductCategory::factory(), // Crée une catégorie associée
             'user_id' => User::factory(), // Associe un utilisateur

@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($works as $work) {
             $work->number = 'WORK' . str_pad($work->id, 6, '0', STR_PAD_LEFT);
+            $this->updateWorkCost($work);
             $work->save();
         }
         // Create product usage for works
@@ -61,10 +62,26 @@ class DatabaseSeeder extends Seeder
             ->recycle(Product::all())
             ->create();
 
+
         // Create worker ratings for works
         WorkRating::factory(10)
             ->recycle($works)
             ->recycle($users)
             ->create();
     }
+
+    private function updateWorkCost(Work $work)
+    {
+        // Calculer le coût total des produits ajoutés
+        $productsCost = 0;
+
+        foreach ($work->products as $product) {
+            $productsCost += $product->price * $product->pivot->quantity_used;
+        }
+
+        // Mettre à jour le coût du travail, en ajoutant les produits au prix de base
+        $work->cost = $work->base_cost + $productsCost;
+        $work->save();
+    }
+
 }

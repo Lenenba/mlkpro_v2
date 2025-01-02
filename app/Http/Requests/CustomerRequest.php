@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CustomerRequest extends FormRequest
@@ -27,8 +29,11 @@ class CustomerRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => [
                 'required',
+                'string',
+                'lowercase',
                 'email',
-                'unique:customers,email,' . $customerId, // Allow the same email for the current customer on update
+                'max:255',
+                Rule::unique(User::class)->ignore($this->user()->id),
             ],
             'phone' => 'nullable|string|max:15',
             'address' => 'nullable|string|max:255',

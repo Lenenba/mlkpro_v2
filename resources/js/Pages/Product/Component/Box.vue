@@ -37,10 +37,10 @@ const getProductImage = (product) => {
     <Link :href="route(routeName, item.id)">
         <div class=" h-32 w-42 card card-side card-xs bg-base-100 shadow-xl flex flex-row items-center">
             <figure class="h-32 w-32">
-                <img :src="item.image" alt="Movie" />
+                <img :src="getProductImage(item)" alt="Movie" />
             </figure>
             <div class="card-body flex flex-col items-start">
-                <h2 class="card-title text-xs">{{ item.name }}</h2>
+                <h2 class="card-title text-xs">{{ item.name }} - {{ item.number }}</h2>
                 <p v-if="page != 'show'" className="text-sm text-gray-700 overflow-hidden">
                     {{ item.description }}
                 </p>
@@ -49,7 +49,7 @@ const getProductImage = (product) => {
                 </p>
                 <div className="card-actions justify-end mt-2">
                     <button class="btn">
-                        <div class="badge badge-soft badge-accent">{{ item.number }}</div>
+                        Price : <div class="badge badge-soft badge-accent">{{ item.price }} $</div>
                     </button>
                     <button class="btn">
                         Stock :<div class="badge badge-soft badge-success">{{ item.stock }}</div>
