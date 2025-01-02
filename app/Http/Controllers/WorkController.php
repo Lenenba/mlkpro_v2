@@ -94,7 +94,7 @@ class WorkController extends Controller
 
         // Improved query for products with eager loading, filters, and pagination
         $productsQuery = Product::mostRecent()->filter($filters)->with(['category', 'works']);
-        $products = $productsQuery->simplePaginate(5)->withQueryString();
+        $products = $productsQuery->simplePaginate(8)->withQueryString();
 
         // Retrieve the customer by authenticated user, optimizing the query
         $customer = Customer::with(['works'])
