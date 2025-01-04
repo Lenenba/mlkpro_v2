@@ -28,9 +28,9 @@ const categoryOptions = [
 ];
 
 const typeOptions = [
-    { value: 'repair', label: 'Repair' },
-    { value: 'installation', label: 'Installation' },
-    { value: 'maintenance', label: 'Maintenance' },
+    { value: 'Quotes', label: 'Quotes' },
+    { value: 'Jobs', label: 'Jobs' },
+    { value: 'Estimations', label: 'Estimations' },
     { value: 'other', label: 'Other' },
 ];
 

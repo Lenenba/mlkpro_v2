@@ -8,10 +8,9 @@ use App\Models\Product;
 use App\Models\Customer;
 use App\Models\ProductWork;
 use Illuminate\Http\Request;
-use App\Models\ProductCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Pest\ArchPresets\Custom;
+use Carbon\Carbon;
 
 class WorkController extends Controller
 {
@@ -22,10 +21,19 @@ class WorkController extends Controller
     public function index()
     {
         $works = Work::with(['customer', 'products', 'ratings'])
+            ->byUser(Auth::user()->id)
             ->orderBy('work_date', 'desc')
             ->paginate(10);
 
-        return inertia('Work/Index', ['works' => $works]);
+            return inertia('Work/Index', [
+                'works' => $works->map(function ($work) {
+                    return [
+                        'id' => $work->id,
+                        'title' => $work->number, // Remplacez par le champ utilisé pour le titre
+                        'date' => Carbon::parse($work->work_date)->format('Y-m-d'), // Format ISO
+                    ];
+                }),
+            ]);
     }
 
     /**
