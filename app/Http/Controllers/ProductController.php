@@ -64,6 +64,13 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
+        try {
+            $this->authorize('update', $product); // Vérification d'autorisation
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            // Redirection avec un message d'erreur si l'autorisation échoue
+            return redirect()->back()->with('error', 'You are not authorized to edit this product.');
+        }
+
         return inertia('Product/Show', [
             'product' => $product->load(['category', 'user']),
             'categories' => ProductCategory::all()
@@ -75,7 +82,13 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product): RedirectResponse
     {
-        $this->authorize('update', $product);
+        try {
+            $this->authorize('update', $product); // Vérification d'autorisation
+        } catch (\Illuminate\Auth\Access\AuthorizationException $e) {
+            // Redirection avec un message d'erreur si l'autorisation échoue
+            return redirect()->back()->with('error', 'You are not authorized to edit this product.');
+        }
+
         $validated = $request->validated();
         $validated['image'] = FileHandler::handleImageUpload($request, 'image', 'products/product.jpg', $product->image);
         $product->price = $validated['price'];

@@ -33,7 +33,7 @@ const props = defineProps({
         <BodyLayoutVue>
             <CustomerHeader :customer="customer" :work="work" :tab="null" />
             <TableProduct :products="workProducts" :work="work"/>
-            <ProductList :products="products" :work="work" :filters="filters"/>
+            <ProductList v-if="work.invoice === null" :products="products" :work="work" :filters="filters"/>
         </BodyLayoutVue>
     </AuthenticatedLayout>
 </template>

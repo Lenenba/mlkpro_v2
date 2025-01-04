@@ -115,13 +115,13 @@ const adaptCustomersToListItems = (type) => {
             <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-2 sm:gap-6 lg:gap-8">
                 <!-- <StatGaget /> -->
                 <div class="pt-8 ">
-                    <List class="min-h-[410px]" :items="adaptCustomersToListItems('customers')" :type="'customer'">
+                    <List class="min-h-[410px]" :items="adaptCustomersToListItems('customers')" :type="'customer.index'">
                         <template #Title> Recent Customers
                         </template>
                     </List>
                 </div>
                 <div class="pt-8 ">
-                    <List class="min-h-[410px]" :items="adaptCustomersToListItems('works')" :type="'work/edit'">
+                    <List class="min-h-[410px]" :items="adaptCustomersToListItems('works')" :type="'work.edit'">
                         <template #Title> Recent Works
                         </template>
                     </List>

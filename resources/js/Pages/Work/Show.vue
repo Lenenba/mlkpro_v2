@@ -76,8 +76,9 @@ const getImage = (product) => {
                                 <p class="text-sm font-medium mt-2">$ {{ product.price }}</p>
                             </div>
                             <div class="flex items-center gap-4">
-                                <input type="number" class="w-12 border rounded-lg" value="1" min="1">
-                                <button class="btn btn-error btn-xs">Remove</button>
+                                <input v-if="work.invoice?.id === null" type="number" class="w-12 border rounded-lg" value="1" min="1">
+                                <button class="btn btn-error btn-xs" v-if="work.invoice?.id != null" disabled="disabled">Remove</button>
+                                <button class="btn btn-error btn-xs" v-else >Remove</button>
                             </div>
                         </div>
                     </div>
@@ -109,7 +110,10 @@ const getImage = (product) => {
                                 <p>$ {{ calculateTotal(work) }}</p>
                             </div>
                         </div>
-                        <button class="btn btn-primary w-full mt-6">Proceed to bills</button>
+                        <form :action="route('invoice.generate', work.id)" method="GET">
+                            <button type="submit" class="btn btn-primary w-full mt-6" v-if="work.invoice?.id != null" disabled="disabled">Proceed to bills</button>
+                            <button type="submit" class="btn btn-primary w-full mt-6" v-else>Proceed to bills</button>
+                        </form>
                     </div>
                 </div>
             </div>
