@@ -14,10 +14,9 @@ class InvoiceController extends Controller
     public function index(?Request $request)
     {
         $filters = $request->only(['name']);
-
         $invoices = Invoice::with('customer', 'work')
             ->latest()
-            ->byUser(Auth::id())
+            ->byUser(Auth::user()->id)
             ->filter($filters)
             ->simplePaginate(12)
             ->withQueryString();
@@ -49,12 +48,13 @@ class InvoiceController extends Controller
             $invoice = $customer->invoices()->create([
                 'status' => 'pending',
                 'total' => $this->calculateTotal($work),
-                'work_id' => $work->id, // Lien avec le travail
-                'user_id' => $work->user_id,
+                'work_id' => $work->id,
             ]);
         }
 
+
         // Assignez un numéro de facture unique
+        $invoice->user_id = Auth::user()->id;
         $invoice->number = 'INV' . str_pad($invoice->id, 6, '0', STR_PAD_LEFT);
         $invoice->save();
 
@@ -70,36 +70,6 @@ class InvoiceController extends Controller
         // Retourner le fichier PDF
         return $pdf->download("{$invoice->number}.pdf");
     }
-
-    public function show($invoiceId)
-    {
-        // Charger la facture avec ses relations
-        $invoice = Invoice::with('customer', 'work')->findOrFail($invoiceId);
-
-        // Vérifier que la facture et le travail sont correctement liés
-        $work = $invoice->work;
-        if (!$work) {
-            return redirect()->back()->with('error', 'Work not found for this invoice.');
-        }
-
-        $customer = $invoice->customer;
-        if (!$customer) {
-            return redirect()->back()->with('error', 'Customer not found for this invoice.');
-        }
-
-        try {
-            // Générer le PDF
-            Pdf::setOptions(['isRemoteEnabled' => true]); // Autoriser les images distantes
-            $pdf = Pdf::loadView('invoices.template', compact('work', 'customer', 'invoice'));
-
-            // Télécharger le PDF
-            return $pdf->download("{$invoice->number}.pdf");
-        } catch (\Exception $e) {
-            // Gestion des erreurs
-            return redirect()->back()->with('error', 'An error occurred while generating the PDF. Please try again.');
-        }
-    }
-
 
     public function markAsPaid($invoiceId)
     {

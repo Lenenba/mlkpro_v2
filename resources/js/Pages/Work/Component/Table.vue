@@ -70,7 +70,7 @@ const cutText = (text, length) => {
                     <td>{{ product.stock }}</td>
                     <th>{{ product.pivot.quantity_used }} - {{ product.pivot.unit }}</th>
                     <th class="px-4 py-2 text-sm whitespace-nowrap">
-                        <button @click="handleDelete(product)"
+                        <button v-if="work.invoice === null" @click="handleDelete(product)"
                             class="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-red-500 hover:bg-red-500/10 rounded-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                                 class="h-4 w-4">

@@ -134,19 +134,27 @@ watch(() => filterForm.name, (newValue) => {
                                 </div>
                             </td>
                             <td>{{ invoice.total }}</td>
-                            <td>{{ invoice.created_at }}</td>
-                            <td>{{ invoice.status }}</td>
+                            <td>{{ new Date(invoice.created_at).toLocaleDateString()  }}</td>
                             <td>
-                                <Link :href="route('invoice.show', invoice.id)">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
-                                        fill="none" class="w-6 h-6 text-red-500">
-                                        <path opacity="0.5"
-                                            d="M17 9.00195C19.175 9.01406 20.3529 9.11051 21.1213 9.8789C22 10.7576 22 12.1718 22 15.0002V16.0002C22 18.8286 22 20.2429 21.1213 21.1215C20.2426 22.0002 18.8284 22.0002 16 22.0002H8C5.17157 22.0002 3.75736 22.0002 2.87868 21.1215C2 20.2429 2 18.8286 2 16.0002L2 15.0002C2 12.1718 2 10.7576 2.87868 9.87889C3.64706 9.11051 4.82497 9.01406 7 9.00195"
-                                            stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                                        <path d="M12 2L12 15M12 15L9 11.5M12 15L15 11.5" stroke="#1C274C" stroke-width="1.5"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                    </svg>
-                                </Link>
+                                <span class="badge badge-warning" v-if="invoice.status === 'pending'">
+                                    {{ invoice.status }}
+                                </span>
+                                <span class="badge badge-success" v-else>
+                                    {{ invoice.status }} </span>
+                            </td>
+                            <td>
+                                <form :action="route('invoice.generate', invoice.work?.id)" method="GET">
+                                    <button type="submit" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24"
+                                            fill="none" class="w-6 h-6 text-red-500">
+                                            <path opacity="0.5"
+                                                d="M17 9.00195C19.175 9.01406 20.3529 9.11051 21.1213 9.8789C22 10.7576 22 12.1718 22 15.0002V16.0002C22 18.8286 22 20.2429 21.1213 21.1215C20.2426 22.0002 18.8284 22.0002 16 22.0002H8C5.17157 22.0002 3.75736 22.0002 2.87868 21.1215C2 20.2429 2 18.8286 2 16.0002L2 15.0002C2 12.1718 2 10.7576 2.87868 9.87889C3.64706 9.11051 4.82497 9.01406 7 9.00195"
+                                                stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
+                                            <path d="M12 2L12 15M12 15L9 11.5M12 15L15 11.5" stroke="#1C274C" stroke-width="1.5"
+                                                stroke-linecap="round" stroke-linejoin="round" />
+                                        </svg>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                     </tbody>

@@ -32,13 +32,11 @@ Route::middleware('auth')->group(function () {
         ->only(['index', 'store', 'update', 'create', 'show']);
 
     // Work Management
-    Route::get('/work/edit/{work_id}', [WorkController::class, 'edit'])
-        ->name('work.edit');
-
     Route::get('/work/create/{customer_id}', [WorkController::class, 'create'])
         ->name('work.create');
 
-    Route::resource('work', WorkController::class);
+    Route::resource('work', WorkController::class)
+        ->except(['create']);
 
     // Product Management
     Route::resource('product', ProductController::class);
@@ -56,9 +54,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/invoice', [InvoiceController::class, 'index'])
         ->name('invoice.index');
-
-    Route::get('/invoice/{invoice}', [InvoiceController::class, 'show'])
-        ->name('invoice.show');
 });
 
 // Authentication Routes

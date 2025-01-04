@@ -14,7 +14,7 @@ const form = useForm({
     category: props.work?.category || '',
     work_date: props.work?.work_date || '',
     time_spent: props.work?.time_spent || '',
-    base_cost: props.work?.cost || '',
+    base_cost: props.work?.base_cost || '',
 });
 
 const categoryOptions = [

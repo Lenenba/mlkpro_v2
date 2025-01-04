@@ -124,7 +124,6 @@ class ProductWorkController extends Controller
         foreach ($work->products as $product) {
             $productsCost += $product->price * $product->pivot->quantity_used;
         }
-
         // Mettre à jour le coût du travail, en ajoutant les produits au prix de base
         $work->cost = $work->base_cost + $productsCost;
         $work->save();

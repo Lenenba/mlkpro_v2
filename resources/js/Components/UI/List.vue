@@ -33,7 +33,7 @@ defineProps({
                 <div class="font-medium">{{ item.name }}</div>
                 <div class="text-xs uppercase font-semibold opacity-60">{{ item.description }}</div>
             </div>
-            <Link ref="router" :href="`/${type}/${item.id}`">
+            <Link :href="route(type, item.id)">
                 <button class="btn btn-square btn-ghost">
                     <svg class="size-[1.2em]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2" fill="none"
