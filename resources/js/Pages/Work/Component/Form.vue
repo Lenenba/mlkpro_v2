@@ -18,12 +18,9 @@ const form = useForm({
 });
 
 const categoryOptions = [
-    { value: 'plumbing', label: 'Plumbing' },
-    { value: 'electrical', label: 'Electrical' },
-    { value: 'carpentry', label: 'Carpentry' },
-    { value: 'painting', label: 'Painting' },
-    { value: 'cleaning', label: 'Cleaning' },
-    { value: 'gardening', label: 'Gardening' },
+    { value: 'Quotes', label: 'Quotes' },
+    { value: 'Jobs', label: 'Jobs' },
+    { value: 'Estimations', label: 'Estimations' },
     { value: 'other', label: 'Other' },
 ];
 
@@ -31,6 +28,13 @@ const typeOptions = [
     { value: 'Quotes', label: 'Quotes' },
     { value: 'Jobs', label: 'Jobs' },
     { value: 'Estimations', label: 'Estimations' },
+    { value: 'other', label: 'Other' },
+    { value: 'plumbing', label: 'Plumbing' },
+    { value: 'electrical', label: 'Electrical' },
+    { value: 'carpentry', label: 'Carpentry' },
+    { value: 'painting', label: 'Painting' },
+    { value: 'cleaning', label: 'Cleaning' },
+    { value: 'gardening', label: 'Gardening' },
     { value: 'other', label: 'Other' },
 ];
 
