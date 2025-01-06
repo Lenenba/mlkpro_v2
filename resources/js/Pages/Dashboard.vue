@@ -89,7 +89,7 @@ const adaptCustomersToListItems = (type) => {
                 rank: work.id >= 10 ? work.id : "0" + work.id,
                 name: work.category,
                 description: work.type,
-                image: work.image || "https://api.oneapipro.com/images/placeholder?text=D'A&width=150&height=150&color=7d9ea2",
+                image: work.image,
             };
         });
     }
