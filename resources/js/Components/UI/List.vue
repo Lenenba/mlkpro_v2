@@ -30,7 +30,7 @@ defineProps({
             class="list-row flex items-center gap-4 p-4 border-b border-base-200">
             <div class="text-4xl font-thin opacity-30 tabular-nums">{{ item.rank }}</div>
             <div>
-                <img v-if="item.image" :src="item.image" :alt="item.name || 'Item image'" class="size-10 rounded-box" />
+                <img v-if="item.image" :src="`/storage/${item.image}`" :alt="item.name || 'Item image'" class="size-10 rounded-box" />
                 <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"
                     class="h-9 w-9 mx-auto">
                     <path fill-rule="evenodd"
