@@ -28,7 +28,7 @@ defineProps({
         <!-- Liste dynamique -->
         <li v-for="(item, index) in items" :key="index" class="list-row flex items-center gap-4 p-4 border-b border-base-200">
             <div class="text-4xl font-thin opacity-30 tabular-nums">{{ item.rank }}</div>
-            <div><img :src="item.image" alt="Item image" class="size-10 rounded-box" /></div>
+            <div><img :src="'/storage/'.item.image" alt="Item image" class="size-10 rounded-box" /></div>
             <div class="list-col-grow">
                 <div class="font-medium">{{ item.name }}</div>
                 <div class="text-xs uppercase font-semibold opacity-60">{{ item.description }}</div>
