@@ -9,6 +9,7 @@ use App\Models\ProductCategory;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -26,6 +27,7 @@ class ProductController extends Controller
             'products' => Product::mostRecent()
                 ->filter($filters)
                 ->with(['category', 'user'])
+                ->byUser(Auth::user()->id)
                 ->simplePaginate(12)
                 ->withQueryString()
         ]);
